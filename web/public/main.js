@@ -1,18 +1,17 @@
 function show() {
     fetch('/posts')
     .then(response => response.json())
-    .then(data => {
-        var postsNode = document.getElementById('posts');
+    .then(posts => {
+        const postsNode = document.getElementById('posts');
         let html = '';
-        for (const x of data) {
+        for (const post of posts) {
             html += `
-                <h2>${x[1]}</h2>
-                <time>${new Date(x[3] * 1000)}</time>
-                <article>${x[2]}</article>
+                <h2>${post[1]}</h2>
+                <time class="badge badge-info">${new Date(post[3] * 1000)}</time>
+                <article>${post[2]}</article>
             `;
         }
         postsNode.innerHTML = html;
-
     }).catch(err => {
         console.log(err)
     });
@@ -20,11 +19,11 @@ function show() {
 
 show();
 
-let addPostForm = document.getElementById('add-post-form');
-addPostForm.addEventListener('submit', function (event) {
+const addPostForm = document.getElementById('add-post-form');
+addPostForm.addEventListener('submit', event => {
     event.preventDefault();
-    let controls = document.querySelectorAll('input, textarea');
-    let data = new URLSearchParams();
+    const controls = document.querySelectorAll('input, textarea');
+    const data = new URLSearchParams();
     Array.from(controls).forEach(el => {
         data.append(el.getAttribute('name'), el.value);
     });
@@ -32,10 +31,9 @@ addPostForm.addEventListener('submit', function (event) {
     fetch('/posts/create', {
         method: 'POST',
         body: data
-    }).then(function (response) {
+    }).then(function (_response) {
         show();
     }).catch(function (error) {
         console.log(error)
     })
 })
-
