@@ -5,7 +5,7 @@
 
 Выполните
 ``` bash
-sh ./start
+./start
 ```
 и откройте в браузере http://localhost:8080/
 
