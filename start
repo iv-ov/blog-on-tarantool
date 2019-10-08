@@ -1,0 +1,12 @@
+### docker run --name blog-on-tarantool -p3301:3301 -d -v `pwd`:/opt/tarantool tarantool/tarantool tarantool /opt/tarantool/app.lua
+
+# docker run --rm -t -i \
+#             -p3301:3301 -p8080:8080 \
+#             -v `pwd`/app.lua:/opt/tarantool/app.lua \
+#             -v `pwd`/_data:/var/lib/tarantool \
+#             -e TARANTOOL_USER_NAME=user -e TARANTOOL_USER_PASSWORD=pass \
+#             tarantool/tarantool:1.10.3 tarantool /opt/tarantool/app.lua
+
+docker rm tarantool-blog-container;
+docker build -t tarantool-blog-image .;
+docker run -p 8080:8080 -e TARANTOOL_USER_NAME=user -e TARANTOOL_USER_PASSWORD=pass --name tarantool-blog-container tarantool-blog-image
