@@ -1,13 +1,16 @@
+
+const postsNode = document.getElementById('posts');
+
 function show() {
     fetch('/posts')
     .then(response => response.json())
     .then(posts => {
-        const postsNode = document.getElementById('posts');
         let html = '';
         for (const post of posts) {
             html += `
-                <h2>${post[1]}</h2>
+                <h2>${post[1]} <sup>#${post[0]}</sup></h2>
                 <time class="badge badge-info">${new Date(post[3] * 1000)}</time>
+                <button class="btn btn-sm btn-outline-danger" onClick="deletePost(${post[0]})">Delete</button>
                 <article>${post[2]}</article>
             `;
         }
@@ -18,6 +21,16 @@ function show() {
 }
 
 show();
+
+function deletePost(id) {
+    fetch(`/posts/${id}`, {
+        method: 'DELETE'
+    }).then(function (_response) {
+        show();
+    }).catch(function (error) {
+        console.log(error)
+    })
+}
 
 const addPostForm = document.getElementById('add-post-form');
 addPostForm.addEventListener('submit', event => {
