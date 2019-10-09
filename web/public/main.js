@@ -45,6 +45,7 @@ addPostForm.addEventListener('submit', event => {
         method: 'POST',
         body: data
     }).then(function (_response) {
+        addPostForm.reset();
         show();
     }).catch(function (error) {
         console.log(error)
