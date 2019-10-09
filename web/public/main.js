@@ -15,8 +15,8 @@ function show() {
             `;
         }
         postsNode.innerHTML = html;
-    }).catch(err => {
-        console.log(err)
+    }).catch(error => {
+        console.log(error);
     });
 }
 
@@ -28,14 +28,27 @@ function deletePost(id) {
     }).then(function (_response) {
         show();
     }).catch(function (error) {
-        console.log(error)
+        console.log(error);
     })
 }
 
+
 const addPostForm = document.getElementById('add-post-form');
+const controls = document.querySelectorAll('input, textarea');
+const submitButton = document.querySelector('[type="submit"]');
+
+const setSubmitEnabled = (doEnable) => {
+    if (doEnable) {
+        submitButton.removeAttribute('disabled');
+    } else {
+        submitButton.setAttribute('disabled', '');
+    };
+};
+
 addPostForm.addEventListener('submit', event => {
     event.preventDefault();
-    const controls = document.querySelectorAll('input, textarea');
+    setSubmitEnabled(false);
+
     const data = new URLSearchParams();
     Array.from(controls).forEach(el => {
         data.append(el.getAttribute('name'), el.value);
@@ -46,8 +59,10 @@ addPostForm.addEventListener('submit', event => {
         body: data
     }).then(function (_response) {
         addPostForm.reset();
+        setSubmitEnabled(true);
         show();
     }).catch(function (error) {
-        console.log(error)
+        setSubmitEnabled(true);
+        console.log(error);
     })
-})
+});
