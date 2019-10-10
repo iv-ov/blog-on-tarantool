@@ -13,7 +13,7 @@ end
 -----
 
 function addItemHandler(req)
-    local data = req:post_param()
+    local data = req:json()
     local result = box.space.blog:auto_increment{
         data.title, data.text, os.time()
     }

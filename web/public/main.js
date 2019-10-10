@@ -49,14 +49,14 @@ addPostForm.addEventListener('submit', event => {
     event.preventDefault();
     setSubmitEnabled(false);
 
-    const data = new URLSearchParams();
+    const data = {};
     Array.from(controls).forEach(el => {
-        data.append(el.getAttribute('name'), el.value);
+        data[el.getAttribute('name')] = el.value;
     });
 
     fetch('/posts/create', {
         method: 'POST',
-        body: data
+        body: JSON.stringify(data),
     }).then(function (_response) {
         addPostForm.reset();
         setSubmitEnabled(true);
