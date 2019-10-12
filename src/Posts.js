@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Posts({posts, deletePost, totalPages}) {
+function Posts({ posts, deletePost, totalPages }) {
     return (
         <>{posts.length === 0
             ?

@@ -8,7 +8,7 @@ import PostForm from './PostForm';
 const API_URL = 'http://localhost:8080';
 
 function App() {
-    const [data, setData] = useState({items:[], totalPages: 0});
+    const [data, setData] = useState({ items: [], totalPages: 0 });
     const [page, setPage] = useState(1);
 
     const [formData, setFormData] = useState({ title: '', text: '' });
@@ -25,7 +25,7 @@ function App() {
                 .then(response => response.json())
                 .then(data => {
                     setData(data);
-                    if (data.totalPages < page){
+                    if (data.totalPages < page) {
                         // Remember not to set page to 0
                         setPage(data.totalPages || 1);
                     }
@@ -75,8 +75,8 @@ function App() {
             </div>
             <div className="col">
                 <h2>Posts</h2>
-                {data.totalPages ? <Pagination {...{page, setPage, totalPages: data.totalPages}} /> : null}
-                <Posts {...{posts: data.items, deletePost, totalPages: data.totalPages}} />
+                {data.totalPages ? <Pagination {...{ page, setPage, totalPages: data.totalPages }} /> : null}
+                <Posts {...{ posts: data.items, deletePost, totalPages: data.totalPages }} />
             </div>
         </div>
     );
