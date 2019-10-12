@@ -2,7 +2,11 @@ import React from 'react';
 
 function Posts({posts, deletePost}) {
     return (
-        <>{posts.map(post =>
+        <>{posts.length === 0
+            ?
+            <p>No posts yet. Feel free to post something <span role="img" aria-label="A green twig">🌿</span></p>
+            :
+            posts.map(post =>
             <div key={post}>
                 <h3>{post[1]} <sup>#{post[0]}</sup></h3>
                 <time className="badge badge-info">{new Date(post[3] * 1000).toString()}</time>
