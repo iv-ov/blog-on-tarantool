@@ -82,7 +82,7 @@ function App() {
             <div className="col">
                 <h2>Posts</h2>
                 {data.totalPages ? <Pagination {...{page, setPage, totalPages: data.totalPages}} /> : null}
-                <Posts {...{posts: data.items, deletePost}} />
+                <Posts {...{posts: data.items, deletePost, totalPages: data.totalPages}} />
             </div>
         </div>
     );
