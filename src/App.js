@@ -24,6 +24,10 @@ function App() {
                 .then(response => response.json())
                 .then(data => {
                     setData(data);
+                    if (data.totalPages < page){
+                        // Remember not to set page to 0
+                        setPage(data.totalPages || 1);
+                    }
                 }).catch(error => {
                     console.log(error);
                 });
