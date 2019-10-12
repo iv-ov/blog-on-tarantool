@@ -14,6 +14,13 @@ function App() {
     const [formData, setFormData] = useState({ title: '', text: '' });
     const [submitAllowed, setSubmitAllowed] = useState(true);
 
+    // Hey-hey! We've found a nice use case for "null"!
+    const [error, _setError] = useState(null);
+    const setError = (error) => {
+        _setError(error);
+        error && console.error(error);
+    };
+
     // Just an indicator that the data is changed by the user and we need to download the latest data
     const [lastUpdated, setLastUpdated] = useState(0);
     const signalizeChanges = () => setLastUpdated(Date.now());
@@ -29,8 +36,9 @@ function App() {
                         // Remember not to set page to 0
                         setPage(data.totalPages || 1);
                     }
+                    setError(null);
                 }).catch(error => {
-                    console.log(error);
+                    setError(error);
                 });
         },
         [page, lastUpdated],
@@ -51,9 +59,10 @@ function App() {
             formNode.reset();
             setSubmitAllowed(true);
             signalizeChanges();
+            setError(null);
         }).catch(function (error) {
             setSubmitAllowed(true);
-            console.log(error);
+            setError(error);
         })
     };
 
@@ -62,12 +71,14 @@ function App() {
             method: 'DELETE'
         }).then(function (_response) {
             signalizeChanges();
+            setError(null);
         }).catch(function (error) {
-            console.log(error);
+            setError(error);
         })
     }
 
-    return (
+    return <>
+        {error ? <p className="text-danger">{error.toString()}</p> : null}
         <div className="row">
             <div className="col">
                 <h2>Add post</h2>
@@ -79,7 +90,7 @@ function App() {
                 <Posts {...{ posts: data.items, deletePost, totalPages: data.totalPages }} />
             </div>
         </div>
-    );
+    </>;
 }
 
 export default App;
