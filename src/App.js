@@ -11,6 +11,7 @@ function App() {
     const [data, setData] = useState({items:[], totalPages: 0});
     const [page, setPage] = useState(1);
 
+    const [formData, setFormData] = useState({ title: '', text: '' });
     const [submitAllowed, setSubmitAllowed] = useState(true);
 
     // Just an indicator that the data is changed by the user and we need to download the latest data
@@ -41,18 +42,11 @@ function App() {
         event.preventDefault();
         setSubmitAllowed(false);
 
-        const data = {};
-        //@TODO we wanted to be quick and dirty, fix this
-        const controls = document.querySelectorAll('input, textarea');
-        Array.from(controls).forEach(el => {
-            data[el.getAttribute('name')] = el.value;
-        });
-
         const formNode = formRef.current;
 
         fetch(`${API_URL}/posts/create`, {
             method: 'POST',
-            body: JSON.stringify(data),
+            body: JSON.stringify(formData),
         }).then(function (_response) {
             formNode.reset();
             setSubmitAllowed(true);
@@ -77,7 +71,7 @@ function App() {
         <div className="row">
             <div className="col">
                 <h2>Add post</h2>
-                <PostForm {...{formRef, onSubmit, submitAllowed}} />
+                <PostForm {...{ formData, setFormData, formRef, onSubmit, submitAllowed }} />
             </div>
             <div className="col">
                 <h2>Posts</h2>
