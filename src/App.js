@@ -11,7 +11,7 @@ function App() {
     const [data, setData] = useState({ items: [], totalPages: 0 });
     const [page, setPage] = useState(1);
 
-    const [formData, setFormData] = useState({ title: '', text: '' });
+    const [formData, setFormData] = useState({ id: null, title: '', text: '' });
     const [submitAllowed, setSubmitAllowed] = useState(true);
 
     // Hey-hey! We've found a nice use case for "null"!
@@ -77,6 +77,15 @@ function App() {
         })
     }
 
+    function editPost(id) {
+        const post = data.items.find(post => post[0] === id);
+        setFormData({
+            id: post[0],
+            title: post[1],
+            text: post[2],
+        });
+    }
+
     return <>
         {error ? <p className="text-danger">{error.toString()}</p> : null}
         <div className="row">
@@ -87,7 +96,7 @@ function App() {
             <div className="col">
                 <h2>Posts</h2>
                 {data.totalPages ? <Pagination {...{ page, setPage, totalPages: data.totalPages }} /> : null}
-                <Posts {...{ posts: data.items, deletePost, totalPages: data.totalPages }} />
+                <Posts {...{ posts: data.items, editPost, deletePost, totalPages: data.totalPages }} />
             </div>
         </div>
     </>;
