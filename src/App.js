@@ -44,19 +44,16 @@ function App() {
         [page, lastUpdated],
     );
 
-    const formRef = React.createRef();
-
     const onSubmit = (event) => {
         event.preventDefault();
         setSubmitAllowed(false);
 
-        const formNode = formRef.current;
 
         fetch(`${API_URL}/posts/create`, {
             method: 'POST',
             body: JSON.stringify(formData),
         }).then(function (_response) {
-            formNode.reset();
+            setFormData({ id: null, title: '', text: '' });
             setSubmitAllowed(true);
             signalizeChanges();
             setError(null);
@@ -91,7 +88,7 @@ function App() {
         <div className="row">
             <div className="col">
                 <h2>Add post</h2>
-                <PostForm {...{ formData, setFormData, formRef, onSubmit, submitAllowed }} />
+                <PostForm {...{ formData, setFormData, onSubmit, submitAllowed }} />
             </div>
             <div className="col">
                 <h2>Posts</h2>
