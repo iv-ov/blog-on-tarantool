@@ -15,7 +15,21 @@ end
 
 local json = require('json')
 
+local httpOptionsResponse = {
+    status = 200,
+    headers = {
+        -- @todo: carefully consider the right value for production. Now we allow any site to access the API
+        ['Access-Control-Allow-Origin'] = '*',
+        ['Access-Control-Allow-Methods'] = 'PUT, DELETE, GET, OPTIONS',
+        ['Access-Control-Allow-Headers'] = 'Content-Type'
+    }
+}
+
 function addItemHandler(req)
+    if req.method == 'OPTIONS' then
+        return httpOptionsResponse
+    end
+
     local data = req:json()
     local result = box.space.blog:auto_increment{
         data.title, data.text, os.time()
@@ -67,15 +81,14 @@ function itemManipulationHandler(req)
     end
 
     if req.method == 'OPTIONS' then
-        result = ''
+        return httpOptionsResponse
     end
 
     return {
         status = 200,
         headers = {
             -- @todo: carefully consider the right value for production. Now we allow any site to access the API
-            ['Access-Control-Allow-Origin'] = '*',
-            ['Access-Control-Allow-Methods'] = 'PUT, DELETE, GET, OPTIONS'
+            ['Access-Control-Allow-Origin'] = '*'
         },
         body = json.encode(result)
     }

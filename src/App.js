@@ -59,6 +59,9 @@ function App() {
 
         fetch(url, {
             method,
+            headers: {
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify(formData),
         }).then(function (_response) {
             setFormData({ id: null, title: '', text: '' });
