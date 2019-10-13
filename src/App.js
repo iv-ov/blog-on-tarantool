@@ -44,13 +44,21 @@ function App() {
         [page, lastUpdated],
     );
 
+
     const onSubmit = (event) => {
         event.preventDefault();
         setSubmitAllowed(false);
 
+        let url = `${API_URL}/posts/create`;
+        let method = 'POST';
+        // For edit mode
+        if (formData.id) {
+            url = `${API_URL}/posts/${formData.id}`;
+            method = 'PUT';
+        }
 
-        fetch(`${API_URL}/posts/create`, {
-            method: 'POST',
+        fetch(url, {
+            method,
             body: JSON.stringify(formData),
         }).then(function (_response) {
             setFormData({ id: null, title: '', text: '' });
