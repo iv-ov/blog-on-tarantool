@@ -71,7 +71,15 @@ function itemManipulationHandler(req)
     end
 
     if req.method == 'PUT' then
-        result = update(id, req:post_param())
+        result = update(id, req:json())
+        return {
+            status = 200,
+            headers = {
+                -- @todo: carefully consider the right value for production. Now we allow any site to access the API
+                ['Access-Control-Allow-Origin'] = '*'
+            },
+            body = json.encode(result)
+        }
     end
 
     if req.method == 'OPTIONS' then
@@ -92,9 +100,11 @@ function delete(id)
     return box.space.blog:delete(id)
 end
 
-function update(id, post_param)
-    -- @todo implement update
-    return box.space.blog:select(id)
+function update(id, data)
+    return box.space.blog:update(id, {
+        {'=', 2, data.title},
+        {'=', 3, data.text}
+    })
 end
 
 local server = require('http.server').new(nil, 8080, {app_dir = '/usr/share/tarantool'})
