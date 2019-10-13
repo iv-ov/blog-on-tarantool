@@ -56,44 +56,29 @@ end
 function itemManipulationHandler(req)
     local id = tonumber(req:stash('id'))
 
-    local result = 'Hmm...';
+    local result = nil;
 
     if req.method == 'DELETE' then
         result = delete(id)
-        return {
-            status = 200,
-            headers = {
-                -- @todo: carefully consider the right value for production. Now we allow any site to access the API
-                ['Access-Control-Allow-Origin'] = '*'
-            },
-            body = json.encode(result)
-        }
     end
 
     if req.method == 'PUT' then
         result = update(id, req:json())
-        return {
-            status = 200,
-            headers = {
-                -- @todo: carefully consider the right value for production. Now we allow any site to access the API
-                ['Access-Control-Allow-Origin'] = '*'
-            },
-            body = json.encode(result)
-        }
     end
 
     if req.method == 'OPTIONS' then
-        return {
-            status = 200,
-            headers = {
-                -- @todo: carefully consider the right value for production. Now we allow any site to access the API
-                ['Access-Control-Allow-Origin'] = '*',
-                ['Access-Control-Allow-Methods'] = 'PUT, DELETE, GET, OPTIONS'
-            }
-        }
+        result = ''
     end
 
-    return req:render({json = result})
+    return {
+        status = 200,
+        headers = {
+            -- @todo: carefully consider the right value for production. Now we allow any site to access the API
+            ['Access-Control-Allow-Origin'] = '*',
+            ['Access-Control-Allow-Methods'] = 'PUT, DELETE, GET, OPTIONS'
+        },
+        body = json.encode(result)
+    }
 end
 
 function delete(id)
