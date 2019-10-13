@@ -51,7 +51,7 @@ function getListHandler(req)
     local itemsPerPage = 2
     local offset = itemsPerPage * (page - 1)
 
-    local items = box.space.blog:select({}, {iterator = 'LE', offset = offset, limit = itemsPerPage})
+    local items = box.space.blog:select({}, {iterator = 'REQ', offset = offset, limit = itemsPerPage})
     local totalCount = box.space.blog:len()
     return {
         status = 200,
